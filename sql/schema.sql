@@ -16,11 +16,11 @@ AS $$
             n.osm_id,
             n.version,
             n.changeset,
-            (n.tags->>'amenity')       AS amenity,
-            (n.tags->>'name')          AS name,
-            (n.tags->>'operator')      AS operator,
-            (n.tags->>'opening_hours') AS opening_hours,
-            (n.tags->>'description')   AS description,
+            CASE
+                WHEN n.tags->>'amenity' = 'food_sharing'
+                 AND n.tags->>'vending'  = 'pet_food' THEN 'give_box'
+                ELSE n.tags->>'amenity'
+            END AS type,
             ST_Y(ST_Transform(n.geom, 4326)) AS lat,
             ST_X(ST_Transform(n.geom, 4326)) AS lon,
             n.tags::text AS tags_json
