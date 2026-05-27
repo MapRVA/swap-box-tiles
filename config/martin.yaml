@@ -1,0 +1,13 @@
+listen_addresses: '0.0.0.0:3000'
+worker_processes: 4
+
+postgres:
+  connection_string: ${DATABASE_URL}
+  pool_size: 20
+  functions:
+    swapbox_v1:
+      schema: public
+      function: swapbox_v1
+      minzoom: 0
+      maxzoom: 18
+      bounds: [-180.0, -85.05, 180.0, 85.05]

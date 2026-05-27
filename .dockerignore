@@ -1,0 +1,6 @@
+.github/
+sql/
+config/
+*.md
+.dockerignore
+.gitignore
