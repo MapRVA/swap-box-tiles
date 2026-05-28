@@ -9,6 +9,7 @@ curl -sSL "$PLANET_URL" | \
   osmium tags-filter \
     --input-format=pbf \
     --output-format=pbf \
+    --omit-referenced \
     --output="$FILTERED" \
     - \
     n/amenity=public_bookcase,food_sharing,give_box
