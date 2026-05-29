@@ -25,7 +25,8 @@ function osm2pgsql.process_node(object)
     tables.swapbox_nodes:insert({
         version   = object.version,
         changeset = object.changeset,
-        timestamp = object.timestamp,
+        -- osm2pgsql 1.8 hands us a Unix epoch int; timestamptz wants ISO 8601.
+        timestamp = object.timestamp and os.date('!%Y-%m-%dT%H:%M:%SZ', object.timestamp),
         user_name = object.user,
         uid       = object.uid,
         tags      = object.tags,
