@@ -13,7 +13,9 @@ AS $$
     mvt_features AS (
         SELECT
             ST_AsMVTGeom(n.geom, bounds.geom, 4096, 64, true) AS geom,
-            n.osm_id,
+            -- swapbox_nodes is a define_node_table, whose implicit id column is
+            -- node_id; expose it as osm_id for the tile/viewer property name.
+            n.node_id AS osm_id,
             n.version,
             n.changeset,
             CASE
@@ -39,6 +41,9 @@ AS $$
         (SELECT value FROM osm2pgsql_properties
          WHERE property = 'current_timestamp')
     );
-$$ LANGUAGE sql STABLE;
+-- SECURITY DEFINER so the postgrest_reader anon role can read the single
+-- replication-timestamp value without holding SELECT on osm2pgsql_properties.
+-- search_path is pinned per the standard SECURITY DEFINER hardening.
+$$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public, pg_temp;
 
 GRANT EXECUTE ON FUNCTION public.freshness() TO postgrest_reader;
