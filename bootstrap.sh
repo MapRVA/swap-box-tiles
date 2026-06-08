@@ -26,7 +26,7 @@ osm2pgsql \
   --extra-attributes \
   --database="$PGDATABASE" \
   --host="$PGHOST" \
-  --username="$PGUSER" \
+  --user="$PGUSER" \
   "$FILTERED"
 
 echo "Initializing replication state..."
